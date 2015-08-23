@@ -8,6 +8,8 @@
  */
 
 #pragma once
+#include <QToolBar>
+#include <QSlider>
 
 namespace r_comp
 {

@@ -14,9 +14,15 @@
 #include <App/GUI/cQVisor.h>
 #include <Visualizer/Hypertree/cVisualizerHypertreeNode.h>
 #include <Component/IComponent.h>
-#include <Replicode/r_code/object.h>
-#include <Replicode/r_exec/opcodes.h>
-#include <Replicode/r_exec/group.h>
+#include <r_code/object.h>
+#include <r_exec/opcodes.h>
+#include <r_exec/group.h>
+#include <QLineEdit>
+#include <QDockWidget>
+#include <QLabel>
+#include <float.h>
+#include <Debug/cDebug.h>
+
 using namespace Visor;
 
 /**********************************************************************/
@@ -139,12 +145,12 @@ void cQFilterWindow::OnFilter( bool iChecked )
     cVisualizerReplicode *vVisualizer = mMainWindow->GetVisor()->GetVisualizer();
     const cVisualizerHypertree::tNodeHash &vNodes = vVisualizer->GetNodes();
     
-    for ( std::hash_map<const IComponent*,cVisualizerHypertreeNode*,cComponentHash>::const_iterator it=vNodes.begin(); it != vNodes.end(); it++ )
+    for ( std::unordered_map<const IComponent*,cVisualizerHypertreeNode*,cComponentHash>::const_iterator it=vNodes.begin(); it != vNodes.end(); it++ )
     {
         it->second->Filter( cVisualizerHypertreeNode::FILTER_HIDE );
     }    
     
-    for ( std::hash_map<const IComponent*,cVisualizerHypertreeNode*,cComponentHash>::const_iterator it=vNodes.begin(); it != vNodes.end(); it++ )
+    for ( std::unordered_map<const IComponent*,cVisualizerHypertreeNode*,cComponentHash>::const_iterator it=vNodes.begin(); it != vNodes.end(); it++ )
     {
         cVisualizerHypertreeNode *vNode = it->second;
         cComponentReplicode *vComponent = (cComponentReplicode*)vNode->GetComponent();
@@ -156,7 +162,7 @@ void cQFilterWindow::OnFilter( bool iChecked )
         else if ( vComponent->GetType() == cComponentReplicode::TYPE_CODE )
         {
             r_code::Code *vCode = vComponent->GetCode();
-            if ( vCode->code(0).asOpcode() == r_exec::Opcodes::Group )
+            if ( vCode->code(0).asOpcode() == r_exec::Opcodes::Grp )
             {
                 FilterGroup( vNode );
             }
@@ -175,7 +181,7 @@ void cQFilterWindow::OnReset( bool iChecked )
     cVisualizerReplicode *vVisualizer = mMainWindow->GetVisor()->GetVisualizer();
     const cVisualizerHypertree::tNodeHash &vNodes = vVisualizer->GetNodes();
     
-    for ( std::hash_map<const IComponent*,cVisualizerHypertreeNode*,cComponentHash>::const_iterator it=vNodes.begin(); it != vNodes.end(); it++ )
+    for ( std::unordered_map<const IComponent*,cVisualizerHypertreeNode*,cComponentHash>::const_iterator it=vNodes.begin(); it != vNodes.end(); it++ )
     {
         it->second->Filter( cVisualizerHypertreeNode::FILTER_NEUTRAL );
     }    
@@ -212,9 +218,9 @@ void cQFilterWindow::FilterView( cVisualizerHypertreeNode *iNode )
     if ( !CheckInterval( vView->code( VIEW_RES ).asFloat(), VALUE_RESILIENCE ) ) return;
     if ( vView->code(0).asOpcode() == r_exec::Opcodes::PgmView )
     {
-        if ( !CheckInterval( vView->code( IPGM_VIEW_ACT ).asFloat(), VALUE_ACTIVATION ) ) return;
+        if ( !CheckInterval( vView->code( VIEW_ACT ).asFloat(), VALUE_ACTIVATION ) ) return;
     }
-    else if ( vView->code(0).asOpcode() == r_exec::Opcodes::GroupView )
+    else if ( vView->code(0).asOpcode() == r_exec::Opcodes::GrpView )
     {
         if ( !CheckInterval( vView->code( GRP_VIEW_VIS ).asFloat(), VALUE_VISIBILITY ) ) return;
     }

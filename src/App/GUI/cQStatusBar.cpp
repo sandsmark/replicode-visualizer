@@ -8,6 +8,7 @@
  */
 
 #include "cQStatusBar.h"
+#include <QLabel>
 using namespace Visor;
 
 /**********************************************************************/

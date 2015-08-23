@@ -8,6 +8,9 @@
  */
 
 #include <App/GUI/Events/IListenerSourceView.h>
+#include <QMainWindow>
+#include <unordered_map>
+#include <set>
 
 namespace r_comp
 {
@@ -18,19 +21,6 @@ namespace r_code
 {
     class Code;
 }
-
-#ifdef _WIN32
-namespace std
-{
-    using namespace stdext;
-}
-#elif defined( __APPLE_CC__ )
-#include <ext/hash_map>
-namespace std
-{
-    using namespace __gnu_cxx;
-}
-#endif
 
 namespace Visor
 {
@@ -85,7 +75,7 @@ namespace Visor
 #ifdef _WIN32
 		typedef std::hash_map<const r_comp::Image *, std::set<int> > tImageViewHash;
 #else
-		typedef std::hash_map<const r_comp::Image *, std::set<int>, cImageHash> tImageViewHash;
+        typedef std::unordered_map<const r_comp::Image *, std::set<int>, cImageHash> tImageViewHash;
 #endif
        
         tImageViewHash mImageViews;

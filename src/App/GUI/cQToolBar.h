@@ -7,6 +7,9 @@
  *
  */
 
+#include <QToolBar>
+#include <QSlider>
+
 namespace Visor
 {
     class cQMainWindow;

@@ -9,6 +9,9 @@
 
 #pragma once
 
+#include <QSettings>
+#include <OgreColourValue.h>
+
 namespace Visor
 {
     class cVisualizerReplicodeSettings

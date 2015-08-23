@@ -9,6 +9,10 @@
 
 #include "cQSettingsDialog.h"
 #include <Replicode/Hypertree/cVisualizerReplicodeSettings.h>
+#include <QLabel>
+#include <QPushButton>
+#include <QColorDialog>
+
 using namespace Visor;
 
 char *gColorNames[]=
@@ -57,7 +61,7 @@ void cQSettingsDialog::AddColor( int iRow, const QString &iLabel, const Ogre::Co
     QPixmap vPixmap( 24, 16 );
     vPixmap.fill( QColor( iColor.r * 255, iColor.g * 255, iColor.b * 255 ) );
     QPushButton *vColor = new QPushButton( QIcon( vPixmap ), "" );
-    vColor->setProperty( "OgreColor", (int)&iColor );
+    vColor->setProperty( "OgreColor", QVariant::fromValue((void*)&iColor) );
     vColor->setFixedSize( 26, 18 );
     iGrid.addWidget( vColor, iRow, 1 );
     connect( vColor, SIGNAL( clicked(bool) ), this, SLOT( OnColorClicked(bool) ) );
@@ -68,7 +72,7 @@ void cQSettingsDialog::OnColorClicked( bool iChecked )
 /**********************************************************************/
 {
     QPushButton *vSender = (QPushButton*)sender();
-    Ogre::ColourValue *iColor = (Ogre::ColourValue*)(vSender->property("OgreColor").toInt());
+    Ogre::ColourValue *iColor = (Ogre::ColourValue*)(qvariant_cast<void*>(vSender->property("OgreColor")));
     QColorDialog vDialog;
     vDialog.setCurrentColor( QColor( iColor->r * 255, iColor->g * 255, iColor->b * 255 ) );
     if ( !vDialog.exec() ) return;

@@ -9,6 +9,8 @@
 
 #include "cVisualizerBasicSprite.h"
 #include <Visualizer/Basic/cVisualizerBasic.h>
+#include <OgreBillboard.h>
+
 using namespace Visor;
 
 /**********************************************************************/

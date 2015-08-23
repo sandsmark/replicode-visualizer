@@ -7,6 +7,10 @@
  *
  */
 
+#include <QStatusBar>
+
+class QLabel;
+
 namespace Visor
 {
     class cQStatusBar : public QStatusBar

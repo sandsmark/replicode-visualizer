@@ -9,19 +9,11 @@
 
 #pragma once
 
-#ifdef _WIN32
-	namespace std
-	{
-		using namespace stdext;
-	}
-#elif defined( __APPLE_CC__ )
-	#include <ext/hash_map>
-	namespace std
-	{
-		using namespace __gnu_cxx;
-	}
-#endif
 #include <Visualizer/IVisualizer.h>
+#include <unordered_map>
+#include <OgreBillboardSet.h>
+#include <OgreBillboard.h>
+#include <OgreSceneNode.h>
 
 namespace Visor
 {
@@ -46,10 +38,10 @@ namespace Visor
 #ifdef _WIN32
 		typedef std::hash_map<const IComponent*,cVisualizerHypertreeNode*> tNodeHash;
 #else
-		typedef std::hash_map<const IComponent*,cVisualizerHypertreeNode*,cComponentHash> tNodeHash;
+        typedef std::unordered_map<const IComponent*,cVisualizerHypertreeNode*,cComponentHash> tNodeHash;
 #endif
 
-		typedef std::hash_map<void*,void*> tGeci;
+        typedef std::unordered_map<void*,void*> tGeci;
         
     protected:
         Ogre::SceneManager      *mScene;

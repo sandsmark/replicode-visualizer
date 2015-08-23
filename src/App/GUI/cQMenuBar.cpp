@@ -9,6 +9,7 @@
 
 #include "cQMenuBar.h"
 #include <App/GUI/cQMainWindow.h>
+#include <QFileDialog>
 using namespace Visor;
 
 /**********************************************************************/

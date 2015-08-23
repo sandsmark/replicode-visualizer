@@ -14,14 +14,18 @@
 #include <App/GUI/cQStatusBar.h>
 #include <App/GUI/cQVisor.h>
 #include <App/GUI/cQSourceView.h>
-#include <App/GUI/cQFilteRWindow.h>
+#include <App/GUI/cQFilterWindow.h>
 #include <App/GUI/cQSettingsDialog.h>
 #include <Replicode/Component/cComponentReplicode.h>
 #include <Replicode/Hypertree/cVisualizerReplicode.h>
 #include <Replicode/Hypertree/cVisualizerReplicodeNode.h>
 #include <Replicode/Hypertree/cVisualizerReplicodeSettings.h>
-#include <ReplicodeIntegration/r_mem_class.h>
-#include <replicode/r_comp/decompiler.h>
+#include <Debug/cDebug.h>
+#include <r_mem_class.h>
+#include <r_comp/decompiler.h>
+#include <r_comp/segments.h>
+#include <fcntl.h>
+#include <QTimer>
 #ifdef WINDOWS
 	#include <hash_map>
 	#include <winsock2.h>
@@ -209,6 +213,7 @@ void cQMainWindow::LoadImage( const char *iFile )
     if ( !vInput.good() ) return;
     
     ImageMessage *vImage = (ImageMessage*)ImageMessage::Read( vInput );
+    vImage->data();
     vInput.close();
     
     //    vImage->trace();
@@ -227,8 +232,8 @@ void cQMainWindow::LoadImageFromMemory( const char *iData, size_t iSize )
     uint32	map_size   = *((uint32*)(iData+0));
     uint32	code_size  = *((uint32*)(iData+4));
     uint32	reloc_size = *((uint32*)(iData+8));
-    ImageMessage *vImage = (ImageMessage*)ImageMessage::Build( map_size, code_size, reloc_size );
-    int vSize = vImage->getSize() * sizeof(word32);
+    ImageMessage *vImage = (ImageMessage*)ImageMessage::Build(r_exec::Now(), map_size, code_size, reloc_size );
+    int vSize = vImage->code_size() * sizeof(word32);
     ASSERTTXT( vSize == ( iSize - 12 ), "Image size should match size of data in file!" );
     memcpy( vImage->data(), iData + 12, iSize - 12 );
     
@@ -248,10 +253,10 @@ void cQMainWindow::SetImage( r_comp::Image *iImage, r_comp::Image *iPrevImage )
     GetVisor()->Clean();
     
     r_code::vector< r_code::Code* > vObjects;
-    iImage->getObjects< r_exec::LObject >( vObjects );
+    iImage->get_objects< r_exec::LObject >( vObjects );
     
 	r_comp::Decompiler	vDecompiler;
-	vDecompiler.init( &r_exec::Metadata);
+    //vDecompiler.init( &r_comp::Metadata);
 	vDecompiler.decompile_references( iImage );
 
 #ifdef WINDOWS

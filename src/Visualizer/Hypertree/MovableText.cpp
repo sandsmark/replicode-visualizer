@@ -7,9 +7,9 @@
  * @update  2006 by barraq see nospam@barraquand.com
  */
 
-#include <Ogre/Ogre.h>
-#include <Ogre/OgreFontManager.h>
-#include "movableText.h"
+#include <Ogre.h>
+#include <Overlay/OgreFontManager.h>
+#include "MovableText.h"
 
 using namespace Ogre;
 

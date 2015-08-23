@@ -9,6 +9,14 @@
 
 #pragma once
 
+#include <QDockWidget>
+#include <QScrollArea>
+#include <QVBoxLayout>
+#include <QGridLayout>
+#include <QPushButton>
+#include <QListWidgetItem>
+
+
 namespace Visor
 {
     class cQMainWindow;

@@ -8,6 +8,7 @@
  */
 
 #include <App/GUI/cQOgre.h>
+#include <QTime>
 
 namespace Visor
 {

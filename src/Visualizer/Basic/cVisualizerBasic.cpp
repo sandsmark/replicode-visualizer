@@ -34,7 +34,7 @@ cVisualizerBasic::cVisualizerBasic( Ogre::SceneManager *iScene )
 void cVisualizerBasic::OnComponentCreated( IComponent *iComponent )
 /**********************************************************************/
 {
-    printf( "[cVisualizerBasic::OnComponentCreated] 0x%08x\n", (unsigned int)iComponent );
+    printf( "[cVisualizerBasic::OnComponentCreated] 0x%p\n", iComponent );
     new cVisualizerBasicSprite( this, iComponent );
 }
 
@@ -42,5 +42,5 @@ void cVisualizerBasic::OnComponentCreated( IComponent *iComponent )
 void cVisualizerBasic::OnComponentDestroyed( IComponent *iComponent )
 /**********************************************************************/
 {
-    printf( "[cVisualizerBasic::OnComponentDestroyed] 0x%08x\n", (unsigned int)iComponent );
+    printf( "[cVisualizerBasic::OnComponentDestroyed] 0x%p\n", iComponent );
 }

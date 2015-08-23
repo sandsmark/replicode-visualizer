@@ -8,11 +8,17 @@
  */
 
 #include "cVisualizerHypertreeNode.h"
+#include <OgreSubMesh.h>
+#include <OgreSceneManager.h>
+#include <OgreViewport.h>
+#include <OgreCamera.h>
+#include <Debug/cDebug.h>
 #include <Component/IComponent.h>
 #include <Visualizer/Hypertree/cVisualizerHypertree.h>
 #include <vector>
 #include <algorithm>
 #include <math.h>
+#include <float.h>
 #include "MovableText.h"
 using namespace Visor;
 
@@ -232,9 +238,9 @@ void cVisualizerHypertreeNode::Layout( const Ogre::Vector3 &iPosition, const Ogr
         }
         vRight /= vRight.length();
         Ogre::Matrix3 vRotation;
-        vRotation.FromAxisAngle( vRight, Ogre::Radian( vPhi ) );
+        vRotation.FromAngleAxis( vRight, Ogre::Radian( vPhi ) );
         vPosition = vPosition * vRotation;
-        vRotation.FromAxisAngle( iNormal, Ogre::Radian( vTheta ) );
+        vRotation.FromAngleAxis( iNormal, Ogre::Radian( vTheta ) );
         vPosition = vPosition * vRotation;
         
         Ogre::Vector3 vNormal = vPosition;

@@ -10,6 +10,10 @@
 #ifndef __include_MovableText_H__
 #define __include_MovableText_H__
 
+#include <OgreMovableObject.h>
+#include <OgreRenderable.h>
+#include <Overlay/OgreFont.h>
+
 namespace Ogre {
     
     class MovableText : public MovableObject, public Renderable

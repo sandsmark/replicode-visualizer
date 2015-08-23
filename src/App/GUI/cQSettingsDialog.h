@@ -9,6 +9,11 @@
 
 #pragma once
 
+#include <QDockWidget>
+#include <QVBoxLayout>
+#include <QGridLayout>
+#include <OgreColourValue.h>
+
 namespace Visor
 {
     

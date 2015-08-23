@@ -15,6 +15,9 @@
 #include <App/GUI/cQContextMenu.h>
 #include <App/GUI/cQMainWindow.h>
 #include <Replicode/Component/cComponentReplicode.h>
+#include <Debug/cDebug.h>
+#include <QMouseEvent>
+#include <QVector2D>
 //#include <OpenGL/OpenGL.h>
 #include <math.h>
 using namespace Visor;

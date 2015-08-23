@@ -21,14 +21,13 @@
 #include <Replicode/Hypertree/cVisualizerReplicode.h>
 #include <Replicode/Hypertree/cVisualizerReplicodeNode.h>
 #include <Replicode/Component/cComponentReplicode.h>
-#include <Replicode/r_exec/init.h>
+#include <r_exec/init.h>
+#include <Debug/cDebug.h>
+#include <chrono>
+
 using namespace Visor;
 
-#ifdef WINDOWS
-	#include <fstream>
-#else
-	#include <fstream.h>
-#endif
+#include <fstream>
 
 /**********************************************************************/
 cApp::cApp( int argc, char *argv[] )
@@ -57,8 +56,12 @@ bool cApp::Init( void )
 #else
     Ogre::String vPath = "Resources/";
 #endif
-    
-    r_exec::Init( NULL, Time::Get, Ogre::String( vPath + "user.classes.replicode" ).c_str() );
+    using namespace std::chrono;
+    r_exec::Init( NULL,
+                  []() -> uint64_t {
+                      return duration_cast<microseconds>(steady_clock::now().time_since_epoch()).count();
+                  },
+                  Ogre::String( vPath + "user.classes.replicode" ).c_str(), &mImage, &mMetadata );
     
     return true;    
 }
@@ -171,7 +174,7 @@ struct cPointerHash
     bool operator()( const void *iC1, const void *iC2 ) const { return false; }
 };
 
-#include <ReplicodeIntegration/r_mem_class.h>
+#include <r_mem_class.h>
 #include <replicode/r_comp/decompiler.h>
 #ifdef WINDOWS
 	#include <hash_map>

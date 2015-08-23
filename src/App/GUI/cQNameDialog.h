@@ -8,6 +8,9 @@
  */
 
 #pragma once;
+#include <QDialog>
+#include <QLineEdit>
+#include <QDialogButtonBox>
 
 namespace Visor
 {

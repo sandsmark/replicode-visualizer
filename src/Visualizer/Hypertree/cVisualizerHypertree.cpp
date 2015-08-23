@@ -9,6 +9,14 @@
 
 #include "cVisualizerHypertree.h"
 #include <Visualizer/Hypertree/cVisualizerHypertreeNode.h>
+#include <OgreMaterialManager.h>
+#include <OgreSceneManager.h>
+#include <OgreTechnique.h>
+#include <OgreSubMesh.h>
+#include <OgreMeshManager.h>
+#include <OgreHardwareBufferManager.h>
+#include <float.h>
+#include <unordered_map>
 //#include <openGL/openGL.h>
 using namespace Visor;
 
@@ -112,7 +120,9 @@ void cVisualizerHypertree::CreateLines( void )
     mLines->_setBounds( Ogre::AxisAlignedBox( -10, -10, -10, 10, 10, 10 ) );
     mLines->_setBoundingSphereRadius( 20 );
     
-    Ogre::Entity *vLinesEntity = mScene->createEntity( "LinesEntity", "Lines" );
+    //Ogre::Entity *vLinesEntity = mScene->createEntity( "LinesEntity", "Lines" );
+    //mScene->getRootSceneNode()->attachObject( vLinesEntity );
+    Ogre::MovableObject *vLinesEntity = mScene->createMovableObject( "LinesEntity", "Lines" );
     mScene->getRootSceneNode()->attachObject( vLinesEntity );
 }
 
@@ -150,7 +160,9 @@ void cVisualizerHypertree::CreateTexturedLines( void )
     mTexturedLines->_setBounds( Ogre::AxisAlignedBox( -10, -10, -10, 10, 10, 10 ) );
     mTexturedLines->_setBoundingSphereRadius( 20 );
     
-    Ogre::Entity *vLinesEntity = mScene->createEntity( "TexturedLinesEntity", "TexturedLines" );
+    //Ogre::Entity *vLinesEntity = mScene->createEntity( "TexturedLinesEntity", "TexturedLines" );
+    //mScene->getRootSceneNode()->attachObject( vLinesEntity );
+    Ogre::MovableObject *vLinesEntity = mScene->createMovableObject( "TexturedLinesEntity", "TexturedLines" );
     mScene->getRootSceneNode()->attachObject( vLinesEntity );
 }
 
@@ -175,7 +187,7 @@ void cVisualizerHypertree::OnComponentCreated( IComponent *iComponent )
 void cVisualizerHypertree::OnComponentDestroyed( IComponent *iComponent )
 /**********************************************************************/
 {
-    printf( "[cVisualizerHypertree::OnComponentDestroyed] 0x%08x\n", (unsigned int)iComponent );
+    printf( "[cVisualizerHypertree::OnComponentDestroyed] %p\n", iComponent );
     
     delete [] mNodes[ iComponent ];
     mNodes.erase( iComponent );
@@ -235,7 +247,7 @@ cVisualizerHypertreeNode *cVisualizerHypertree::FindClickedNode( const Ogre::Vie
     Ogre::Matrix4 vWorld      = mScene->getRootSceneNode()->_getFullTransform();
     Ogre::Matrix4 vView       = vCamera->getViewMatrix();
     Ogre::Matrix4 vProjection = vCamera->getProjectionMatrix();
-    for ( std::hash_map<const IComponent*,cVisualizerHypertreeNode*,cComponentHash>::iterator it=mNodes.begin(); it != mNodes.end(); it++ )
+    for ( std::unordered_map<const IComponent*,cVisualizerHypertreeNode*,cComponentHash>::iterator it=mNodes.begin(); it != mNodes.end(); it++ )
     {
         cVisualizerHypertreeNode *vNode = it->second;
         

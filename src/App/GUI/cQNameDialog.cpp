@@ -8,6 +8,7 @@
  */
 
 #include "cQNameDialog.h"
+#include <QVBoxLayout>
 using namespace Visor;
 
 /**********************************************************************/

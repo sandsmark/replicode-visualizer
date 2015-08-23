@@ -8,7 +8,7 @@
  */
 
 #include <QtOpenGL/QGLWidget>
-#include <Ogre/Ogre.h>
+#include <Ogre.h>
 
 namespace Visor
 {

@@ -11,7 +11,7 @@
 #include <QtGui/qevent.h>
 #ifdef Q_WS_MAC
 	#include <OpenGL/OpenGL.h>
-#else
+#elsif defined(Q_WS_WIN)
 	#include <wingdi.h>
 #endif
 using namespace Visor;
@@ -81,7 +81,7 @@ bool cQOgre::InitWindow( void )
 #ifdef Q_WS_MAC
     // Remember Qt's context
     CGLContextObj vContext = CGLGetCurrentContext();
-#else
+#elsif define(Q_WS_WIN)
 	HGLRC vContext = wglGetCurrentContext();
 	HDC vDC = wglGetCurrentDC();
 #endif

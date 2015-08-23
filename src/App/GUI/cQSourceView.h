@@ -12,6 +12,13 @@
 #include <App/GUI/Highlighter/cHighlighterReplicode.h>
 #include <Event/IEventDispatcher.h>
 #include <App/GUI/Events/IListenerSourceView.h>
+#include <QDockWidget>
+#include <QProgressBar>
+#include <QTextEdit>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QGridLayout>
+#include <QPushButton>
 
 namespace r_exec
 {

@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include <QMenuBar>
+
 namespace Visor
 {
     class cQMainWindow;

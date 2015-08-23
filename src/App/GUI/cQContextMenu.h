@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include <QMenu>
+
 namespace Visor
 {
     class cVisualizerHypertreeNode;

@@ -10,6 +10,8 @@
 #pragma once
 
 #include <Visualizer/IVisualizer.h>
+#include <OgreSceneManager.h>
+#include <OgreBillboardSet.h>
 
 namespace Visor
 {

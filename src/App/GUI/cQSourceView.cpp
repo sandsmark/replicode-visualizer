@@ -8,17 +8,20 @@
  */
 
 #include "cQSourceView.h"
-#include <Replicode/r_code/object.h>
-#include <Replicode/r_code/atom.h>
-#include <Replicode/r_code/utils.h>
-#include <Replicode/r_exec/group.h>
-#include <Replicode/r_exec/opcodes.h>
-#include <Replicode/r_comp/decompiler.h>
+#include <r_code/object.h>
+#include <r_code/atom.h>
+#include <r_code/utils.h>
+#include <r_exec/group.h>
+#include <r_exec/opcodes.h>
+#include <r_comp/decompiler.h>
 #include <Replicode/Component/cComponentReplicode.h>
 #include <App/GUI/cQMainWindow.h>
 #include <App/GUI/cQVisor.h>
 #include <Replicode/Hypertree/cVisualizerReplicode.h>
 #include <Visualizer/Hypertree/cVisualizerHypertreeNode.h>
+#include <QTime>
+#include <QLabel>
+
 using namespace Visor;
 
 /**********************************************************************/
@@ -36,7 +39,7 @@ cQSourceView::cQSourceView( cQMainWindow *iMainWindow, cComponentReplicode *iCom
     else if ( iComponent->GetType() == cComponentReplicode::TYPE_CODE )
     {
         r_code::Code *vCode = iComponent->GetCode();
-        if ( vCode->code(0).asOpcode() == r_exec::Opcodes::Group )
+        if ( vCode->code(0).asOpcode() == r_exec::Opcodes::Grp )
         {
             InitGroup( (r_exec::Group*)vCode );
         }
@@ -142,7 +145,7 @@ void cQSourceView::InitView( r_code::View *iView )
     r_exec::Group *vGroup = (r_exec::Group*)iView->references[0];
     
     // Injection time
-    uint64 vTime = r_code::Timestamp::Get( &iView->code( iView->code( VIEW_IJT ).asIndex() ) );
+    uint64_t vTime = r_code::Utils::GetTimestamp( &iView->code( iView->code( VIEW_IJT ).asIndex() ) );
     mGrid.addWidget( new QLabel( "Injection" ), 0, 0 );
     QLabel *vInjection = new QLabel( QString::number( vTime / 1000 ) + "ms" );
     mGrid.addWidget( vInjection, 0, 1 );
@@ -159,9 +162,9 @@ void cQSourceView::InitView( r_code::View *iView )
     else if ( iView->code(0).asOpcode() == r_exec::Opcodes::PgmView )
     {
         // Activation
-        AddBar( 3, "Activation", iView->code( IPGM_VIEW_ACT ).asFloat(), vGroup->get_act_thr(), mGrid );
+        AddBar( 3, "Activation", iView->code( VIEW_ACT ).asFloat(), vGroup->get_act_thr(), mGrid );
     }
-    else if ( iView->code(0).asOpcode() == r_exec::Opcodes::GroupView )
+    else if ( iView->code(0).asOpcode() == r_exec::Opcodes::GrpView )
     {
         // Visibility
         AddBar( 3, "Visibility", iView->code( GRP_VIEW_VIS ).asFloat(), vGroup->get_vis_thr(), mGrid );
