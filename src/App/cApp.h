@@ -18,7 +18,7 @@ namespace Visor
     class cVisualizerReplicode;
     class cQMainWindow;
     
-    class cApp : public QApplication
+    class cApp
     {
     protected:
         cQMainWindow *mMainWindow;
@@ -30,11 +30,11 @@ namespace Visor
         void TestAddChildren( IComponent *iRoot, int iLevel );
         int mNumComponents;
         
-        bool Init( void );
-        void Destroy( void );
         
     public:
         cApp( int argc, char *argv[] );
+        bool Init( void );
+        void Destroy( void );
         ~cApp();
         
         int Run();

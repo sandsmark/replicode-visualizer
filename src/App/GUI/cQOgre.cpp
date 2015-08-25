@@ -9,6 +9,8 @@
 
 #include "cQOgre.h"
 #include <QtGui/qevent.h>
+#include <QDebug>
+#include "Debug/cDebug.h"
 #ifdef Q_WS_MAC
 	#include <OpenGL/OpenGL.h>
 #elsif defined(Q_WS_WIN)
@@ -45,15 +47,18 @@ bool cQOgre::InitRoot( void )
 #ifdef Q_WS_MAC
     Ogre::String vPath = Ogre::macBundlePath() + "/Contents/Resources/";    
 #else
-    Ogre::String vPath = "Resources/";    
+    Ogre::String vPath = "resources/";
 #endif
     Ogre::String vA = vPath + "Config/Plugins.cfg";    
     Ogre::String vB = vPath + "Config/Visor.cfg";    
-	Ogre::String vC = vPath + "../Logs/Visor.log";
-	mRoot = OGRE_NEW Ogre::Root( vA, vB, vC );
+    //Ogre::String vC = vPath + "../Logs/Visor.log";
+    mRoot = OGRE_NEW Ogre::Root();// vA, vB, "visor.log" );
+    mRoot->loadPlugin("/usr/lib/OGRE/RenderSystem_GL.so");
+    mRoot->loadPlugin("/usr/lib/OGRE/Plugin_CgProgramManager.so");
   
     // Select rendersystem ( TODO: Select OpenGL )
     Ogre::RenderSystemList vRenderers = mRoot->getAvailableRenderers();
+    ASSERTTXT(vRenderers.size(), "No renderers available!");
     Ogre::RenderSystem *vRender = *vRenderers.begin();
     mRoot->setRenderSystem( vRender );
     

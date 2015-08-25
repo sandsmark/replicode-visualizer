@@ -21,7 +21,7 @@ cQToolBar::cQToolBar( cQMainWindow *iMainWindow )
 #ifdef Q_WS_MAC
     Ogre::String vPath = Ogre::macBundlePath() + "/Contents/Resources/";    
 #else
-    Ogre::String vPath = "Resources/";    
+    Ogre::String vPath = "resources/";
 #endif
 
     setIconSize( QSize( 32, 32 ) );

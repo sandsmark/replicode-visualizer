@@ -30,7 +30,7 @@ material ComponentMaterial
       
       texture_unit
       {
-        texture node.png
+        texture Node.png
         filtering trilinear
       }
     }

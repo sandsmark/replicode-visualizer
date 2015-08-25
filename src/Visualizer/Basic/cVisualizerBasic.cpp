@@ -9,6 +9,7 @@
 
 #include "cVisualizerBasic.h"
 #include <Visualizer/Basic/cVisualizerBasicSprite.h>
+#include <QDebug>
 using namespace Visor;
 
 /**********************************************************************/
@@ -28,6 +29,8 @@ cVisualizerBasic::cVisualizerBasic( Ogre::SceneManager *iScene )
     mBillboards->setVisible( true );
     
     mScene->getRootSceneNode()->attachObject( mBillboards );
+
+    qDebug() << "created material-------------------------------------------------------------------------------------------------------------------";
 }
 
 /**********************************************************************/

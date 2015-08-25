@@ -14,6 +14,9 @@ using namespace Visor;
 
 int main( int argc, char *argv[] )
 {
+    QApplication app(argc, argv);
     cApp vApp( argc, argv );
-    return vApp.Run();
+    vApp.Init();
+
+    return app.exec();
 }

@@ -31,7 +31,7 @@ using namespace Visor;
 
 /**********************************************************************/
 cApp::cApp( int argc, char *argv[] )
-: QApplication( argc, argv ), mVisualizer( NULL )
+: mVisualizer( NULL )
 //  mRoot( NULL ), mWindow( NULL ), mScene( NULL ), mViewport( NULL )
 /**********************************************************************/
 {
@@ -131,7 +131,7 @@ int cApp::Run()
         mMainWindow->OnLayout();
 #endif
         
-        exec();
+        //exec();
         
         /*
 //        printf( "Component name: %s\n", IComponent::GetTypeInfo().GetName() );

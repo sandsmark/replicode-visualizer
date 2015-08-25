@@ -32,7 +32,8 @@ cVisualizerHypertree::cVisualizerHypertree( Ogre::SceneManager *iScene )
         vName.str("");
         vName << i << " Components";
         
-        Ogre::MaterialPtr vMaterial = ((Ogre::MaterialPtr)(Ogre::MaterialManager::getSingleton().getByName( "ComponentMaterial", Ogre::ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME )))->clone( vName.str() );
+        Ogre::MaterialPtr origMaterial = Ogre::MaterialManager::getSingleton().getByName( "ComponentMaterial" );
+        Ogre::MaterialPtr vMaterial = origMaterial->clone( vName.str() );
         
         Ogre::BillboardSet *vBillboards = mScene->createBillboardSet( vName.str() );
         vBillboards->setMaterialName( vName.str() );
@@ -119,11 +120,9 @@ void cVisualizerHypertree::CreateLines( void )
     
     mLines->_setBounds( Ogre::AxisAlignedBox( -10, -10, -10, 10, 10, 10 ) );
     mLines->_setBoundingSphereRadius( 20 );
-    
-    //Ogre::Entity *vLinesEntity = mScene->createEntity( "LinesEntity", "Lines" );
-    //mScene->getRootSceneNode()->attachObject( vLinesEntity );
-    Ogre::MovableObject *vLinesEntity = mScene->createMovableObject( "LinesEntity", "Lines" );
-    mScene->getRootSceneNode()->attachObject( vLinesEntity );
+
+    Ogre::Entity *vLinesEntity = mScene->createEntity( "LinesEntity", "Lines" );
+    mScene->getRootSceneNode()->attachObject( (Ogre::MovableObject*)vLinesEntity );
 }
 
 /**********************************************************************/
@@ -160,10 +159,8 @@ void cVisualizerHypertree::CreateTexturedLines( void )
     mTexturedLines->_setBounds( Ogre::AxisAlignedBox( -10, -10, -10, 10, 10, 10 ) );
     mTexturedLines->_setBoundingSphereRadius( 20 );
     
-    //Ogre::Entity *vLinesEntity = mScene->createEntity( "TexturedLinesEntity", "TexturedLines" );
-    //mScene->getRootSceneNode()->attachObject( vLinesEntity );
-    Ogre::MovableObject *vLinesEntity = mScene->createMovableObject( "TexturedLinesEntity", "TexturedLines" );
-    mScene->getRootSceneNode()->attachObject( vLinesEntity );
+    Ogre::Entity *vLinesEntity = mScene->createEntity( "TexturedLinesEntity", "TexturedLines" );
+    mScene->getRootSceneNode()->attachObject( (Ogre::MovableObject*)vLinesEntity );
 }
 
 /**********************************************************************/

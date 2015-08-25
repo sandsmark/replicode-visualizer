@@ -44,9 +44,9 @@ cQMainWindow::cQMainWindow()
 {
     QSettings vSettings( QSettings::UserScope, "CMLabs", "Visor" );
     cVisualizerReplicodeSettings::Get().Init( vSettings );
-    
+
     mStatusBar      = new cQStatusBar();
-    mVisor          = new cQVisor( *this );
+    mVisor          = new cQVisor( this );
     mToolBar        = new cQToolBar( this );
     mTimeBar        = new cQTimeBar( this );
     mFilterWindow   = new cQFilterWindow( this );

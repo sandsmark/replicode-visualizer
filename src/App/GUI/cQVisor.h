@@ -38,7 +38,7 @@ namespace Visor
     protected:
         cVisualizerReplicode *mVisualizer;
         QTime mTimer;
-        cQMainWindow &mMainWindow;
+        cQMainWindow *mMainWindow;
         
         // Camera controls ( TODO: Create external class for camera handling )
         QPoint mLastMousePos;
@@ -58,14 +58,14 @@ namespace Visor
         virtual bool InitPost( void );
         
     public:
-        cQVisor( cQMainWindow &iMainWindow );
+        cQVisor( cQMainWindow *iMainWindow );
         
         cVisualizerReplicode *GetVisualizer( void ) const { return mVisualizer; }
         
         virtual void RenderFrame( void );
         void TrackNode( cVisualizerReplicodeNode *iNode );
         
-        cQMainWindow &GetMainWindow( void ) const { return mMainWindow; }
+        cQMainWindow *GetMainWindow( void ) const { return mMainWindow; }
         
         void Clean( void );
         

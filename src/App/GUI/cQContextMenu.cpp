@@ -36,7 +36,7 @@ void cQContextMenu::OnViewSource()
 /**********************************************************************/
 {
 //    mVisor->GetMainWindow().ShowSource( ((cComponentReplicode*)mNode->GetComponent())->GetSource().c_str(), mNode->GetName().c_str() );
-    mVisor->GetMainWindow().ShowSource( ((cComponentReplicode*)mNode->GetComponent()) );
+    mVisor->GetMainWindow()->ShowSource( ((cComponentReplicode*)mNode->GetComponent()) );
 }
 
 /**********************************************************************/

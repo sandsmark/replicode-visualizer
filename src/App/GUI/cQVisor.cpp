@@ -23,8 +23,11 @@
 using namespace Visor;
 
 /**********************************************************************/
-cQVisor::cQVisor( cQMainWindow &iMainWindow )
-: mVisualizer( NULL ), mTrackNode( NULL ), mMainWindow( iMainWindow )
+cQVisor::cQVisor( cQMainWindow *iMainWindow ) :
+    cQOgre(iMainWindow),
+    mVisualizer( NULL ),
+    mTrackNode( NULL ),
+    mMainWindow( iMainWindow )
 /**********************************************************************/
 {
     setAttribute( Qt::WA_AcceptTouchEvents );
@@ -42,7 +45,7 @@ bool cQVisor::InitResources( void )
 #ifdef Q_WS_MAC
     Ogre::String vPath = Ogre::macBundlePath() + "/Contents/Resources/";
 #else
-    Ogre::String vPath = "Resources/";
+    Ogre::String vPath = "resources/";
 #endif
 	Ogre::ResourceGroupManager::getSingleton().addResourceLocation( vPath + "Materials/", "FileSystem" );
 	Ogre::ResourceGroupManager::getSingleton().addResourceLocation( vPath + "Fonts/", "FileSystem" );
