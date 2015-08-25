@@ -229,11 +229,11 @@ void cQMainWindow::LoadImage( const char *iFile )
 void cQMainWindow::LoadImageFromMemory( const char *iData, size_t iSize )
 /**********************************************************************/
 {
-    uint32	map_size   = *((uint32*)(iData+0));
-    uint32	code_size  = *((uint32*)(iData+4));
-    uint32	reloc_size = *((uint32*)(iData+8));
+    uint32_t	map_size   = *((uint32_t*)(iData+0));
+    uint32_t	code_size  = *((uint32_t*)(iData+4));
+    uint32_t	reloc_size = *((uint32_t*)(iData+8));
     ImageMessage *vImage = (ImageMessage*)ImageMessage::Build(r_exec::Now(), map_size, code_size, reloc_size );
-    int vSize = vImage->code_size() * sizeof(word32);
+    int vSize = vImage->code_size() * sizeof(int32_t);
     ASSERTTXT( vSize == ( iSize - 12 ), "Image size should match size of data in file!" );
     memcpy( vImage->data(), iData + 12, iSize - 12 );
     
@@ -445,7 +445,7 @@ void cQMainWindow::OnWatchTimer()
         return;
     }
     
-    uint32 vNextImageSize;
+    uint32_t vNextImageSize;
     size_t vReceived = ::recv( mServer, (char*)&vNextImageSize, 4, 0 );
     if ( vReceived == 4 )
     {
@@ -494,7 +494,7 @@ void cQMainWindow::OnShot()
         return;
     }
 
-    uint32 vImageSize;
+    uint32_t vImageSize;
     size_t vReceived = ::recv( vServer, (char*)&vImageSize, 4, 0 );
     ASSERTTXT( vReceived == 4, "Can't read image size from network!" );
     

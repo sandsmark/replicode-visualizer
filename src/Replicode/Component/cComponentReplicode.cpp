@@ -8,7 +8,7 @@
  */
 
 #include "cComponentReplicode.h"
-#include <Replicode/r_code/object.h>
+#include <r_code/object.h>
 using namespace Visor;
 
 /**********************************************************************/

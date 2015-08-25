@@ -45,21 +45,21 @@ using	namespace	mBrane::sdk::payloads;
 template<class	U>	class	ImageCore:
 public	Message<U,Memory>{
 protected:
-	uint32	_map_size;
-	uint32	_code_size;
-	uint32	_reloc_size;
+	uint32_t	_map_size;
+	uint32_t	_code_size;
+	uint32_t	_reloc_size;
 public:
 	ImageCore():_map_size(0),_code_size(0),_reloc_size(0){}
-	uint32	map_size()		const{	return	_map_size;	}
-	uint32	code_size()		const{	return	_code_size;	}
-	uint32	reloc_size()	const{	return	_reloc_size;}
+	uint32_t	map_size()		const{	return	_map_size;	}
+	uint32_t	code_size()		const{	return	_code_size;	}
+	uint32_t	reloc_size()	const{	return	_reloc_size;}
 };
 
 template<class	U>	class	_Image:
-public	CStorage<ImageCore<U>,word32>{
+public	CStorage<ImageCore<U>,int32_t>{
 public:
-	_Image():CStorage<ImageCore<U>,word32>(){}
-	_Image(uint32	map_size,uint32	code_size,uint32	reloc_size){
+	_Image():CStorage<ImageCore<U>,int32_t>(){}
+	_Image(uint32_t	map_size,uint32_t	code_size,uint32_t	reloc_size){
 
 		this->_map_size=map_size;
 		this->_code_size=code_size;
@@ -83,7 +83,7 @@ public:
 	CodeHeader():Message<U,Memory>(){}
 
 	r_exec::_Mem::STDGroupID	destination;	//	unused except when received by RMems.
-	uint32						code_size;		//	in the CStorage below.
+	uint32_t						code_size;		//	in the CStorage below.
 	RObject						*stem;			//	used by rMems to retrieve the RObject/RMarker associated with a constant or cached shared object.
 };
 
@@ -93,7 +93,7 @@ public:
 class	CodePayload:
 public	CStorage<CodeHeader<CodePayload>,Atom>{
 public:
-	CodePayload(uint16	code_size,r_exec::_Mem::STDGroupID	destination=r_exec::_Mem::STDIN):CStorage<CodeHeader<CodePayload>,Atom>(){
+	CodePayload(uint16_t	code_size,r_exec::_Mem::STDGroupID	destination=r_exec::_Mem::STDIN):CStorage<CodeHeader<CodePayload>,Atom>(){
 	
 		this->code_size=code_size;
 		this->destination=destination;
@@ -102,14 +102,14 @@ public:
 
 	~CodePayload(){
 
-		uint16	ref_count=_capacity-code_size;
-		for(uint16	i=0;i<ref_count;++i)
+		uint16_t	ref_count=_capacity-code_size;
+		for(uint16_t	i=0;i<ref_count;++i)
 			*((P<Code>	*)&data(code_size+i))=NULL;
 	}
 
-	uint16		ptrCount()	const{	return	_capacity-code_size;	}
-	__Payload	*getPtr(uint16	i)	const;
-	void		setPtr(uint16	i,__Payload	*p);
+	uint16_t		ptrCount()	const{	return	_capacity-code_size;	}
+	__Payload	*getPtr(uint16_t	i)	const;
+	void		setPtr(uint16_t	i,__Payload	*p);
 };
 
 //	Instantiated on the RMem side (not on the device side).
@@ -120,16 +120,16 @@ public	Code{
 protected:
 	P<CodePayload>	payload;
 	Atom			*_code;		//	taken from the payload to avoid frequent indirections.
-	uint16			_code_size;	//	idem.
+	uint16_t			_code_size;	//	idem.
 
 	RCode():payload(NULL){}
 public:
-	Atom	&code(uint16	i){	return	_code[i];	}
-	Atom	&code(uint16	i)	const{	return	_code[i];	}
-	uint16	code_size()	const{	return	_code_size;	}
-	Code	*get_reference(uint16	i)	const{	return	(Code	*)(&_code[_code_size+i]);	}
-	void	set_reference(uint16	i,Code	*object){	(*(P<Code>	*)(&_code[_code_size+i]))=object;	}
-	uint16	references_size()	const{	return	payload->getCapacity()-_code_size;	}
+	Atom	&code(uint16_t	i){	return	_code[i];	}
+	Atom	&code(uint16_t	i)	const{	return	_code[i];	}
+	uint16_t	code_size()	const{	return	_code_size;	}
+	Code	*get_reference(uint16_t	i)	const{	return	(Code	*)(&_code[_code_size+i]);	}
+	void	set_reference(uint16_t	i,Code	*object){	(*(P<Code>	*)(&_code[_code_size+i]))=object;	}
+	uint16_t	references_size()	const{	return	payload->getCapacity()-_code_size;	}
 
 	virtual	~RCode(){}
 
@@ -159,9 +159,9 @@ public:
 
 		RObject	*r=new	RObject(m);
 		r->set_payload(new(object->code_size()+object->references_size())	CodePayload(object->code_size()),r);
-		for(uint16	i=0;i<object->code_size();++i)
+		for(uint16_t	i=0;i<object->code_size();++i)
 			r->code(i)=object->code(i);
-		for(uint16	i=0;i<object->references_size();++i)
+		for(uint16_t	i=0;i<object->references_size();++i)
 			r->set_reference(i,object->get_reference(i));
 		return	r;
 	}
@@ -185,7 +185,7 @@ public	StreamData<U,Memory>{
 public:
 	CommandHeader():StreamData<U,Memory>(){}
 
-	uint32	code_size;	//	in the CStorage below.
+	uint32_t	code_size;	//	in the CStorage below.
 };
 
 //	Stores the code and the references in one array.
@@ -193,7 +193,7 @@ public:
 class	Command:
 public	CStorage<CommandHeader<Command>,Atom>{
 public:
-	Command(uint16	code_size):CStorage<CommandHeader<Command>,Atom>(){
+	Command(uint16_t	code_size):CStorage<CommandHeader<Command>,Atom>(){
 	
 		this->code_size=code_size;
 		memset(_data,0,_capacity);
@@ -201,16 +201,16 @@ public:
 
 	~Command(){
 
-		uint16	ref_count=_capacity-code_size;
-		for(uint16	i=0;i<ref_count;++i)
+		uint16_t	ref_count=_capacity-code_size;
+		for(uint16_t	i=0;i<ref_count;++i)
 			*((P<Code>	*)&data(code_size+i))=NULL;
 	}
 
 	void	load(r_exec::LObject	*object){
 
-		for(uint16	i=0;i<object->code_size();++i)
+		for(uint16_t	i=0;i<object->code_size();++i)
 			data(i)=object->code(i);
-		for(uint16	i=0;i<object->references_size();++i)
+		for(uint16_t	i=0;i<object->references_size();++i)
 			*((P<Code>	*)&data(code_size+i))=object->get_reference(i);
 	}
 };

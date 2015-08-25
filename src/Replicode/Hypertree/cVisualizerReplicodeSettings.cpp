@@ -8,6 +8,7 @@
  */
 
 #include "cVisualizerReplicodeSettings.h"
+#include "Debug/cDebug.h"
 using namespace Visor;
 
 cVisualizerReplicodeSettings cVisualizerReplicodeSettings::mInstance;

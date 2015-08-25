@@ -31,7 +31,7 @@
 #ifndef	integration_h
 #define	integration_h
 
-#include	<Integration/r_mem_class.h>
+#include	<r_mem_class.h>
 //#define		APPLICATION_CLASSES	"../../Replicode/Integration/r_mem_class_def.h"
 #define		APPLICATION_CLASSES	"r_mem_class_def.h"
 
@@ -39,7 +39,7 @@
 
 
 extern	"C"{
-void	dll_export	Init(const	std::vector<word32>	&numbers,const	std::vector<std::string>	&strings);
+void	dll_export	Init(const	std::vector<int32_t>	&numbers,const	std::vector<std::string>	&strings);
 }
 
 

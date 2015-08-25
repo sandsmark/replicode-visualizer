@@ -31,7 +31,7 @@
 #ifndef	vizualization_module_h
 #define vizualization_module_h
 
-#include	<replicode/Integration/integration.h>
+#include	<integration.h>
 #include	<Core/module_node.h>
 
 #define	N		module::Node
@@ -46,7 +46,7 @@ private:
 	void	initialize(){}
 	void	finalize(){}
 public:
-	void	loadParameters(const	std::vector<word32>	&numbers,const	std::vector<std::string>	&strings){
+	void	loadParameters(const	std::vector<int32_t>	&numbers,const	std::vector<std::string>	&strings){
 		//	define parameters in rmem.xml - see loader module def for an example.
 		//	parameters will appear in the vectors in the order they are declared in the xml file - per type.
 	}

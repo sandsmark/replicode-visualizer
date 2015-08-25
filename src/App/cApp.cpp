@@ -88,8 +88,8 @@ void cApp::TestAddChildren( IComponent *iRoot, int iLevel )
     if ( iLevel > 9 ) return;
 //    if ( iLevel > 10 ) return;
     
-//    uint32 vNumChildren = rand() % 20;
-//    uint32 vSubtract = ( iLevel - 1 ) * 2;
+//    uint32_t vNumChildren = rand() % 20;
+//    uint32_t vSubtract = ( iLevel - 1 ) * 2;
     size_t vNumChildren = rand() % 6;
     if ( vNumChildren == 0 && iLevel == 1 ) vNumChildren = 1;
     size_t vSubtract = 0; //( iLevel - 1 ) * 2;
@@ -175,7 +175,7 @@ struct cPointerHash
 };
 
 #include <r_mem_class.h>
-#include <replicode/r_comp/decompiler.h>
+#include <r_comp/decompiler.h>
 #ifdef WINDOWS
 	#include <hash_map>
 #else
@@ -264,8 +264,8 @@ void cApp::LoadImage( const char *iFile )
              
         /*
         // Show views if it's a group
-        uint16 vOpcode = vCode->code(0).asOpcode();
-        uint16 vGroupOpcode = r_exec::Opcodes::Group;
+        uint16_t vOpcode = vCode->code(0).asOpcode();
+        uint16_t vGroupOpcode = r_exec::Opcodes::Group;
         if ( vCode->code(0).asOpcode() == r_exec::Opcodes::Group )
         {   // Create views
             FOR_ALL_VIEWS_BEGIN( vRoot, it )

@@ -11,8 +11,10 @@
 #include <Visualizer/Hypertree/cVisualizerHypertree.h>
 #include <Replicode/Component/cComponentReplicode.h>
 #include <Replicode/Hypertree/cVisualizerReplicodeSettings.h>
-#include <Replicode/r_code/object.h>
-#include <Replicode/r_exec/opcodes.h>
+#include <r_code/object.h>
+#include <r_exec/opcodes.h>
+#include "Debug/cDebug.h"
+#include <OgreSceneManager.h>
 
 using namespace Visor;
 
@@ -32,7 +34,7 @@ void cVisualizerReplicodeNode::Init( void )
     if ( vCode )
     {
         r_code::Atom vAtom = vCode->code(0);
-        uint16 vOpCode = vAtom.asOpcode();
+        uint16_t vOpCode = vAtom.asOpcode();
         
         mType = 0; //( ((cComponentReplicode*)mComponent)->GetCode()->code(0).asOpcode() & 0xfff ) % 7;
     }
@@ -49,24 +51,24 @@ void cVisualizerReplicodeNode::Init( void )
     }
     
     char Temp[ 256 ];
-    uint8 vOpcode = vCode->code(0).asOpcode();
+    uint8_t vOpcode = vCode->code(0).asOpcode();
     if ( vComponent->GetView() )
     {
         r_code::View *vView = vComponent->GetView();
         sprintf( Temp, "| %sview %04d |", ( vComponent->IsNew() ) ? "*" : "", vComponent->GetView()->code( VIEW_OID ).asOpcode() );
     }
-    else if ( vOpcode == r_exec::Opcodes::IPGM )
+    else if ( vOpcode == r_exec::Opcodes::IPgm )
     {
-        sprintf( Temp, "[ ipgm %04d ]>", rand() % 9999 );
+        sprintf( Temp, "[ ipgm %04lu ]>", vCode->get_oid() );
         Ogre::ColourValue vColor = mBillboard->getColour();
         vColor.a = 1 - vColor.a;   // Controls inverse display
         mBillboard->setColour( vColor );
     }
-    else if ( vOpcode == r_exec::Opcodes::PGM || vOpcode == r_exec::Opcodes::AntiPGM )
+    else if ( vOpcode == r_exec::Opcodes::Pgm || vOpcode == r_exec::Opcodes::AntiPgm )
     {
-        sprintf( Temp, "[ pgm %04d ]>", rand() % 9999 );
+        sprintf( Temp, "[ pgm %04lu ]>", vCode->get_oid() );
     }
-    else if ( vOpcode == r_exec::Opcodes::MkRdx || vOpcode == r_exec::Opcodes::MkAntiRdx )
+    else if ( vOpcode == r_exec::Opcodes::MkRdx)// || vOpcode == r_exec::Opcodes::MkAntiRdx )
     {
         sprintf( Temp, "[ > ]" );
     }
@@ -80,15 +82,15 @@ void cVisualizerReplicodeNode::Init( void )
               vOpcode == r_exec::Opcodes::MkSlnChg  ||
               vOpcode == r_exec::Opcodes::MkActChg )
     {
-        sprintf( Temp, "[ marker %04d ]", rand() % 9999 );
+        sprintf( Temp, "[ marker %04lu ]", vCode->get_oid() );
     }
-    else if ( vOpcode == r_exec::Opcodes::Entity )
+    else if ( vOpcode == r_exec::Opcodes::Ent )
     {
-        sprintf( Temp, "( entity %04d )", rand() % 9999 );
+        sprintf( Temp, "( entity %04lu )", vCode->get_oid() );
     }
     else
     {
-        sprintf( Temp, "| object %04d |", rand() % 9999 );
+        sprintf( Temp, "| object %04lu |", vCode->get_oid() );
     }
     SetName( Temp );
 }
@@ -161,7 +163,7 @@ const Ogre::ColourValue cVisualizerReplicodeNode::GetLineColor( const cVisualize
             }
         }
     }
-    
+    /*
     if ( vCode->code(0).asOpcode() == r_exec::Opcodes::MkAntiRdx )
     {
         int vNumProducts = vCode->code(2).getAtomCount();
@@ -177,9 +179,9 @@ const Ogre::ColourValue cVisualizerReplicodeNode::GetLineColor( const cVisualize
                 return cVisualizerReplicodeSettings::Get().GetColor( cVisualizerReplicodeSettings::COLOR_LINE_REDUCTION_PRODUCT );
             }
         }
-    }    
+    } */
     
-    if ( vCode->code(0).asOpcode() == r_exec::Opcodes::Group )
+    if ( vCode->code(0).asOpcode() == r_exec::Opcodes::Grp )
     {
         /*
         if ( vCode->get_reference(0) == vTargetCode )

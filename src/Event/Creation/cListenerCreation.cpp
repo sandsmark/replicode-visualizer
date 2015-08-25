@@ -15,7 +15,7 @@ using namespace Visor;
 void cListenerCreation::OnComponentCreated( IComponent *iComponent )
 /**********************************************************************/
 {
-    printf( "[cListenerCreation::OnComponentCreated] 0x%08x\n", (unsigned int)iComponent );
+    printf( "[cListenerCreation::OnComponentCreated] 0x%p\n", iComponent );
 //    IEventDispatcher<cListenerCreation> vDispatcher;
 //    vDispatcher.Dispatch< &cListenerCreation::OnComponentCreated >();
 }

@@ -8,6 +8,7 @@
  */
 
 #include <Component/IComponent.h>
+#include <string>
 
 namespace r_code
 {
