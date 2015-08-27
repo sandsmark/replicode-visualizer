@@ -13,7 +13,7 @@ material ComponentMaterial
         vertex_program_ref Visor/Hyper
         {
             param_named_auto mWorld WORLD_MATRIX
-            param_named_auto mViewProj VIEWPROJ_MATRIX
+            //param_named_auto mViewProj VIEWPROJ_MATRIX
         }
       
 //      point_sprites off
@@ -73,7 +73,7 @@ material CustomTextMaterial
             vertex_program_ref Visor/HyperFont
             {
                 param_named_auto mWorld WORLD_MATRIX
-                param_named_auto mViewProj VIEWPROJ_MATRIX
+                //param_named_auto mViewProj VIEWPROJ_MATRIX
             }
             
             fragment_program_ref Visor/HyperFontFP
@@ -99,7 +99,7 @@ material CustomCaptionTextMaterial
             vertex_program_ref Visor/HyperCaptionFont
             {
                 param_named_auto mWorld WORLD_MATRIX
-                param_named_auto mViewProj VIEWPROJ_MATRIX
+                //param_named_auto mViewProj VIEWPROJ_MATRIX
             }
             
             texture_unit
@@ -122,7 +122,7 @@ material ArrowheadMaterial
         vertex_program_ref Visor/HyperArrowhead
         {
             param_named_auto mWorld WORLD_MATRIX
-            param_named_auto mViewProj VIEWPROJ_MATRIX
+            //param_named_auto mViewProj VIEWPROJ_MATRIX
         }
 
         fragment_program_ref Visor/HyperArrowheadFP
@@ -153,7 +153,7 @@ material ArrowfootMaterial
         vertex_program_ref Visor/HyperArrowhead
         {
             param_named_auto mWorld WORLD_MATRIX
-            param_named_auto mViewProj VIEWPROJ_MATRIX
+            //param_named_auto mViewProj VIEWPROJ_MATRIX
         }
 
         fragment_program_ref Visor/HyperArrowheadFP
@@ -184,7 +184,7 @@ material SelectionMaterial
         vertex_program_ref Visor/Hyper
         {
             param_named_auto mWorld WORLD_MATRIX
-            param_named_auto mViewProj VIEWPROJ_MATRIX
+            //param_named_auto mViewProj VIEWPROJ_MATRIX
         }
       
       point_sprites on
@@ -193,7 +193,7 @@ material SelectionMaterial
       
       texture_unit
       {
-        texture selection.png
+        texture line.png
       }
     }
   }

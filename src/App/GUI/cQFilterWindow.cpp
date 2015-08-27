@@ -18,6 +18,7 @@
 #include <r_exec/opcodes.h>
 #include <r_exec/group.h>
 #include <QLineEdit>
+#include <QSpinBox>
 #include <QDockWidget>
 #include <QLabel>
 #include <float.h>
@@ -92,13 +93,14 @@ void cQFilterWindow::AddRange( int iRow, const QString &iLabel, float iFrom, flo
 {
     iGrid.addWidget( new QLabel( iLabel ), iRow, 0 );
     
-    QLineEdit *vFrom = new QLineEdit(); vFrom->setValidator( new QDoubleValidator( iFrom, iTo, 0, vFrom ) );
+    QSpinBox *vFrom = new QSpinBox();// vFrom->setValidator( new QDoubleValidator( iFrom, iTo, 0, vFrom ) );
     vFrom->setFixedWidth( 64 );
+    vFrom->setValue(iFrom);
 //    vFrom->setText( QString::number( iFrom ) );
     iGrid.addWidget( vFrom, iRow, 1 );
     connect( vFrom, SIGNAL( valueChanged(int) ), this, SLOT( OnValueChanged(int) ) );
 
-    QLineEdit *vTo = new QLineEdit(); vTo->setValidator( new QDoubleValidator( iFrom, iTo, 0, vTo ) );
+    QSpinBox *vTo = new QSpinBox();// vTo->setValidator( new QDoubleValidator( iFrom, iTo, 0, vTo ) );
     vTo->setFixedWidth( 64 );
 //    vTo->setText( QString::number( iTo ) );
     iGrid.addWidget( vTo, iRow, 2 );

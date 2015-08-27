@@ -1,180 +1,89 @@
-!load ../Test/std.replicode
+!load resources/std.replicode
+
+
+; utilities.
+
+!def (std_grp _upr _sln_thr _act_thr _vis_thr _ntf_grps) (grp _upr _sln_thr _act_thr _vis_thr 1 0 1 0 0 1 0 0 1 1 1 1 0 0 0 0 0 0 1 0 1 1 0 1 0 0 _ntf_grps 1); c-salient and c-active.
+
+
+; domain-dependent classes.
 
 !class (vec3 x:nb y:nb z:nb)
-!class (mk.last_known (_obj event:))
-!class (mk.val (_obj {object: attribute: value:}))
-!class (mk.tag (_obj {object: tag:st}))
+!class (speech_context (_obj {speaker:ent listener:ent}))
 
-!class (ValueClass (_obj {value:nb}))
 
-!class (tagged_v vector:vec3 string:st)
+; device functions.
 
-!class (string (_obj {s:st id:us}))
-!class (str (_obj s:st))
-!class (counter (_obj value:nb))
-!class (Ping (_obj {object:}))
-!class (Pong (_obj {object:}))
+!dfn (grab_hand :); arg0: a hand, arg1: deadline.
+!dfn (release_hand :); arg0: a hand, arg1: deadline.
+!dfn (move_hand :); arg0: a hand, arg1: target position, arg2: deadline.
+!dfn (speak :); arg0: a word, arg1: deadline.
+!dfn (look_at :); arg0: a vec3, arg1: deadline.
+!dfn (point_at :); arg0: a hand, arg1: target position, arg2: deadline.
 
-!dfn (sample_io_start :nb)
-!dfn (sample_io_stop)
+!dfn (lift_hand :); arg0: a hand, arg1: a distance.
+!dfn (grab_hand :); arg0: a hand.
+!dfn (release_hand :); arg0: a hand.
 
-root:(grp
-1; upr
-0.5; sln_thr
-0.4; act_thr
-0; vis_thr
-1; c_sln
-0; c_sln_thr
-1; c_act
-0; c_act_thr
-0; dcy_per
-0; dcy_tgt
-1; dcy_prd
-0; dcy_auto
-1; sln_chg_thr
-1; sln_chg_prd
-1; act_chg_thr
-1; act_chg_prd
-0; avg_sln
-0; high_sln
-0; low_sln
-0; avg_act
-0; high_act
-0; low_act
-1; high_sln_thr
-0; low_sln_thr
-1; sln_ntf_prd
-1; high_act_thr
-0; low_act_thr
-1; act_ntf_prd
-0; ntf_new
-0; low_res_thr
-[nil]; ntf_grps
-1; psln_thr
-)
-[]
-   [SYNC_FRONT now 0 forever nil nil 0 0]
+!def sampling_period 100000us
 
-g1:(grp
-1; upr
-1; sln_thr
-0; act-thr
-0; vis_thr
-1; c_sln
-0; c_sln_thr
-1; c_act
-0; c_act_thr
--0.2; dcy_per
-0; dcy_tgt
-0; dcy_prd
-0; dcy_auto
-1; sln_chg_thr
-2; sln_chg_prd
-1; act_chg_thr
-1; act_chg_prd
-0; avg_sln
-0; high_sln
-0; low_sln
-0; avg_act
-0; high_act
-0; low_act
-1; high_sln_thr
-0; low_sln_thr
-1; sln_ntf_prd
-1; high_act_thr
-0; low_act_thr
-1; act_ntf_prd
-0; ntf_new
-0; low_res_thr
-[nil]; ntf_grps
-1; psln_thr
-)
-[]
-   [SYNC_FRONT now 0 forever root nil 0 0]
 
-stdin:(grp
-1; upr
-0; sln_thr
-0; act_thr
-0; vis_thr
-1; c_sln
-0; c_sln_thr
-1; c_act
-0; c_act_thr
-0; dcy_per
-1; dcy_tgt
-0; dcy_prd
-0; dcy_auto
-1; sln_chg_thr
-1; sln_chg_prd
-1; act_chg_thr
-1; act_chg_prd
-0; avg_sln
-0; high_sln
-0; low_sln
-0; avg_act
-0; high_act
-0; low_act
-1; high_sln_thr
-0; low_sln_thr
-1; sln_ntf_prd
-1; high_act_thr
-0; low_act_thr
-1; act_ntf_prd
-0; ntf_new
-0; low_res_thr
-[root]; ntf_grps
-1; psln_thr
-)
-[]
-   [SYNC_FRONT now 0 forever root nil 0 0]
-   [SYNC_FRONT now 0 forever g1 nil 1 1]; last 2 members: vis and cov
+; initial groups.
 
-stdout:(grp
-1; upr
-0; sln_thr
-0; act_thr
-0; vis_thr
-1; c_sln
-0; c_sln_thr
-1; c_act
-0; c_act_thr
-0; dcy_per
-0; dcy_tgt
-1; dcy_prd
-0; dcy_auto
-1; sln_chg_thr
-1; sln_chg_prd
-1; act_chg_thr
-1; act_chg_prd
-0; avg_sln
-0; high_sln
-0; low_sln
-0; avg_act
-0; high_act
-0; low_act
-1; high_sln_thr
-0; low_sln_thr
-1; sln_ntf_prd
-1; high_act_thr
-0; low_act_thr
-1; act_ntf_prd
-0; ntf_new
-0; low_res_thr
-[nil]; ntf_grps
-1; psln_thr
-)
-[]
-   [SYNC_FRONT now 0 forever root nil 0 0]
+root:(std_grp 0 0 0 0 [nil]) [[SYNC_ONCE now 0 forever nil nil COV_OFF 0]]
+stdout:(std_grp 0 0 0 0 |[]) [[SYNC_ONCE now 0 forever root nil COV_OFF 0]]
+stdin:(std_grp 2 0 0 0 [stdout]) [[SYNC_ONCE now 0 forever root nil COV_OFF 0]]; ensure stdin.upr=sampling_period.
 
-self:(ent
-0.95; psln_thr
-)
-[]
-   [SYNC_FRONT now 0.6 forever root nil]
+primary:(std_grp 2 0 0.4 0 |[]) [[SYNC_ONCE now 0 forever root nil COV_OFF 0]]; ensure primary.upr=stdin.upr.
+secondary:(std_grp 2 0 0.3 0 |[]) [[SYNC_ONCE now 0 forever root nil COV_OFF 0]]; ensure secondary.upr=primary.upr.
+grp_pair:(mk.grp_pair primary secondary 1) [[SYNC_ONCE now 0 forever root nil]]
+drives:(std_grp 40 0 0 0 [stdout]) [[SYNC_ONCE now 0 forever root nil COV_OFF 0]]; holds pgm that inject drives periodically; drive priority=pgm.act; ensure ipgm.tsc>primary.upr.
 
-position:(ent
-1; psln_thr
-)
-[]
-   [SYNC_FRONT now 0 forever root nil]
+
+; extensions.
+
+; args: pass_through, ctpx_on, gtpx_on, ptpx_on, trace injections, decompile_models, primary group, other output groups.
+auto_focus:(icpp_pgm "auto_focus" [true true false false true true primary] RUN_ALWAYS 0us VOLATILE SILENT 1) [[SYNC_ONCE now 0 forever stdin nil 1]]
+
+
+; application ontology.
+
+; attributes.
+
+essence:(ont 1) [[SYNC_ONCE now 0 forever root nil]]; usage: (mk.val x essence "sphere" 1) or (mk.val x essence sphere 1) if sphere is defined as an entity.
+color:(ont 1) [[SYNC_ONCE now 0 forever root nil]]; usage: (mk.val x color "green" 1) or (mk.val x color green 1) if green is defined as an entity.
+role:(ont 1) [[SYNC_ONCE now 0 forever root nil]]; usage (mk.val self role interviewer 1)
+
+position_x:(ont 1) [[SYNC_ONCE now 0 forever root nil]]
+position_y:(ont 1) [[SYNC_ONCE now 0 forever root nil]]
+position_z:(ont 1) [[SYNC_ONCE now 0 forever root nil]]
+speed_x:(ont 1) [[SYNC_ONCE now 0 forever root nil]]
+speed_y:(ont 1) [[SYNC_ONCE now 0 forever root nil]]
+speed_z:(ont 1) [[SYNC_ONCE now 0 forever root nil]]
+
+attachment:(ont 1) [[SYNC_ONCE now 0 forever root nil]]; usage: (mk.val self_right_hand attachment a_thing 1)
+spoken:(ont 1) [[SYNC_ONCE now 0 forever root nil]]; usage: (mk.val an_actor spoken a_sentence 1)
+pointed_at:(ont 1) [[SYNC_ONCE now 0 forever root nil]]; usage: (mk.val an_actor pointed_at a_location 1)
+looked_at:(ont 1) [[SYNC_ONCE now 0 forever root nil]]; usage: (mk.val an_actor looked_at a_location 1)
+
+knowing:(ont 1) [[SYNC_ONCE now 0 forever root nil]]; usage: (mk.val an_actor knowing something 1)
+most_salient:(ont 1) [[SYNC_ONCE now 0 forever root nil]]
+
+
+; values.
+
+actor:(ont 1) [[SYNC_ONCE now 0 forever root nil]]
+interviewer:(ont 1) [[SYNC_ONCE now 0 forever root nil]]
+interviewee:(ont 1) [[SYNC_ONCE now 0 forever root nil]]
+hand:(ont 1) [[SYNC_ONCE now 0 forever root nil]]
+head:(ont 1) [[SYNC_ONCE now 0 forever root nil]]
+cube:(ont 1) [[SYNC_ONCE now 1 forever root nil]]
+
+
+; initial application objects.
+
+self:(ont 1) [[SYNC_ONCE now 0 forever root nil]]
+; (mk.val self essence actor 1) [[SYNC_STATE now 1 forever stdin nil]]
+
+; drive targets; drives are goals whose target fact points to an entity.
+run:(ent 1) [[SYNC_ONCE now 0 forever root nil]]

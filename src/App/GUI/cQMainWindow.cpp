@@ -24,6 +24,8 @@
 #include <r_mem_class.h>
 #include <r_comp/decompiler.h>
 #include <r_comp/segments.h>
+#include <r_exec/init.h>
+#include <chrono>
 #include <fcntl.h>
 #include <QTimer>
 #ifdef WINDOWS
@@ -68,6 +70,20 @@ cQMainWindow::cQMainWindow()
     
     restoreGeometry( vSettings.value( "WindowGeometry" ).toByteArray() );
     restoreState   ( vSettings.value(    "WindowState" ).toByteArray() );
+
+
+#ifdef Q_WS_MAC
+    Ogre::String vPath = Ogre::macBundlePath() + "/Contents/Resources/";
+#else
+    Ogre::String vPath = "resources/";
+#endif
+
+    using namespace std::chrono;
+    r_exec::Init( NULL,
+                  []() -> uint64_t {
+                      return duration_cast<microseconds>(steady_clock::now().time_since_epoch()).count();
+                  },
+                  Ogre::String( vPath + "user.classes.replicode" ).c_str(), &mRImage, &mMetadata );
 
 #ifdef WINDOWS
 	WSADATA vInfo;
@@ -256,7 +272,7 @@ void cQMainWindow::SetImage( r_comp::Image *iImage, r_comp::Image *iPrevImage )
     iImage->get_objects< r_exec::LObject >( vObjects );
     
 	r_comp::Decompiler	vDecompiler;
-    //vDecompiler.init( &r_comp::Metadata);
+    vDecompiler.init(&mMetadata);
 	vDecompiler.decompile_references( iImage );
 
 #ifdef WINDOWS

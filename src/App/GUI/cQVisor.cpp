@@ -18,6 +18,7 @@
 #include <Debug/cDebug.h>
 #include <QMouseEvent>
 #include <QVector2D>
+#include <QDebug>
 //#include <OpenGL/OpenGL.h>
 #include <math.h>
 using namespace Visor;
@@ -42,6 +43,7 @@ cQVisor::cQVisor( cQMainWindow *iMainWindow ) :
 bool cQVisor::InitResources( void )
 /**********************************************************************/
 {
+    mOverlaySystem = new Ogre::OverlaySystem;
 #ifdef Q_WS_MAC
     Ogre::String vPath = Ogre::macBundlePath() + "/Contents/Resources/";
 #else
@@ -51,6 +53,7 @@ bool cQVisor::InitResources( void )
 	Ogre::ResourceGroupManager::getSingleton().addResourceLocation( vPath + "Fonts/", "FileSystem" );
 	Ogre::ResourceGroupManager::getSingleton().addResourceLocation( vPath, "FileSystem" );
     Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups(); 
+
     
     return true;
 }
@@ -82,7 +85,7 @@ bool cQVisor::InitPost( void )
 void cQVisor::RenderFrame( void )
 /**********************************************************************/
 {
-//    mViewport->setBackgroundColour( Ogre::ColourValue( Ogre::Math::RangeRandom( 0, 1 ), Ogre::Math::RangeRandom( 0, 1 ), Ogre::Math::RangeRandom( 0, 1 ), Ogre::Math::RangeRandom( 0, 1 ) ) );
+    //mViewport->setBackgroundColour( Ogre::ColourValue( Ogre::Math::RangeRandom( 0, 1 ), Ogre::Math::RangeRandom( 0, 1 ), Ogre::Math::RangeRandom( 0, 1 ), Ogre::Math::RangeRandom( 0, 1 ) ) );
     
     ASSERTTXT( mWindow, "Main window is invalid" );
     ASSERTTXT( mCamera, "Main camera is invalid" );

@@ -11,6 +11,7 @@
 #include <QMainWindow>
 #include <unordered_map>
 #include <set>
+#include <r_comp/segments.h>
 
 namespace r_comp
 {
@@ -69,6 +70,9 @@ namespace Visor
         size_t mActImageSize;
                 
         std::vector<cQSourceView*> mSources;
+
+        r_comp::Image mRImage;
+        r_comp::Metadata mMetadata;
         
         int mServer;
         

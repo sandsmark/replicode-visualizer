@@ -9,7 +9,6 @@
 
 #include <OIS/OIS.h>
 #include <QApplication>
-#include <r_comp/segments.h>
 
 
 namespace Visor
@@ -22,8 +21,6 @@ namespace Visor
     {
     protected:
         cQMainWindow *mMainWindow;
-        r_comp::Image mImage;
-        r_comp::Metadata mMetadata;
         
         cVisualizerReplicode *mVisualizer;
         

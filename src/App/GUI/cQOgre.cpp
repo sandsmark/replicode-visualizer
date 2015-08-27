@@ -11,6 +11,8 @@
 #include <QtGui/qevent.h>
 #include <QDebug>
 #include "Debug/cDebug.h"
+#include <QX11Info>
+
 #ifdef Q_WS_MAC
 	#include <OpenGL/OpenGL.h>
 #elsif defined(Q_WS_WIN)
@@ -26,7 +28,7 @@ cQOgre::cQOgre( QWidget *iParent )
     resize( 128, 128 );
     setAttribute( Qt::WA_PaintOnScreen );
     setAttribute( Qt::WA_NoBackground );
-    
+    this->setAttribute(Qt::WA_OpaquePaintEvent);
     InitRoot();
 }
 
@@ -63,10 +65,12 @@ bool cQOgre::InitRoot( void )
     mRoot->setRenderSystem( vRender );
     
     // Set size to widget size
-    QString vSize = QString( "%1x%2" ).arg( width() ).arg( height() );
-	std::string vFos = vSize.toStdString();
-	const char *vFos2 = vFos.c_str();
-    vRender->setConfigOption( "Video Mode", vFos2 );
+    QString dimensions = QString( "%1x%2" )
+                       .arg(this->width())
+                       .arg(this->height());
+
+     vRender->setConfigOption( "Video Mode", dimensions.toStdString() );
+
     vRender->setConfigOption( "Full Screen", "No" );
     mRoot->saveConfig();
     
@@ -83,35 +87,61 @@ bool cQOgre::InitRoot( void )
 bool cQOgre::InitWindow( void )
 /**********************************************************************/
 {
-#ifdef Q_WS_MAC
-    // Remember Qt's context
-    CGLContextObj vContext = CGLGetCurrentContext();
-#elsif define(Q_WS_WIN)
-	HGLRC vContext = wglGetCurrentContext();
-	HDC vDC = wglGetCurrentDC();
+    Ogre::String winHandle;
+#ifdef WIN32
+    // Windows code
+    winHandle += Ogre::StringConverter::toString((unsigned long)(this->parentWidget()->winId()));
+#elif MACOS
+    // Mac code, tested on Mac OSX 10.6 using Qt 4.7.4 and Ogre 1.7.3
+    Ogre::String winHandle  = Ogre::StringConverter::toString(winId());
+#else
+    // Unix code
+    QX11Info info = x11Info();
+    winHandle  = Ogre::StringConverter::toString((unsigned long)(info.display()));
+    winHandle += ":";
+    winHandle += Ogre::StringConverter::toString((unsigned int)(info.screen()));
+    winHandle += ":";
+    winHandle += Ogre::StringConverter::toString((unsigned long)(this->parentWidget()->winId()));
 #endif
-    
-    // Use widget's window
-    Ogre::NameValuePairList vParams;
-	vParams[ "externalWindowHandle" ] = Ogre::StringConverter::toString( (size_t)winId() );
-    vParams[ "macAPI" ] = "cocoa";
-    vParams[ "macAPICocoaUseNSView" ] = "true";
-    vParams[ "externalGLControl" ] = "true";
-//    vParams[ "externalGLContext" ] = (unsigned long)vContext;
-//    vParams[ "currentGLContext" ] = (unsigned long)vContext;
-    
-    mWindow = mRoot->createRenderWindow( "cQOgre", width(), height(), false, &vParams );    
 
-	/*
-    // Take over Ogre window
-    WId vOgreWinId = 0;
-    mWindow->getCustomAttribute( "WINDOW", &vOgreWinId );
-    create( vOgreWinId );
-	*/
 
-#ifdef Q_WS_MAC
-    // Force Qt context
-    CGLSetCurrentContext( vContext );
+    Ogre::NameValuePairList params;
+#ifndef MACOS
+    // code for Windows and Linux
+    params["parentWindowHandle"] = winHandle;
+    mWindow = mRoot->createRenderWindow( "QOgreWidget_RenderWindow",
+                                         this->width(),
+                                         this->height(),
+                                         false,
+                                         &params );
+
+    mWindow->setActive(true);
+    WId ogreWinId = 0x0;
+    mWindow->getCustomAttribute( "WINDOW", &ogreWinId );
+
+    assert( ogreWinId );
+
+    // bug fix, extract geometry
+    QRect geo = this->frameGeometry ( );
+
+    // create new window
+    this->create( ogreWinId );
+
+    // set geometrie infos to new window
+    this->setGeometry (geo);
+
+    mWindow->setActive(true);
+    mWindow->setVisible(true);
+    //mWindow->setAutoUpdated(true);
+#else
+    // code for Mac
+    params["externalWindowHandle"] = winHandle;
+    params["macAPI"] = "cocoa";
+    params["macAPICocoaUseNSView"] = "true";
+    mWindow = mOgre->createRenderWindow("QOgreWidget_RenderWindow",
+                                        width(), height(), false, &params);
+    mWindow->setActive(true);
+    makeCurrent();
 #endif
 
     return true;
@@ -121,10 +151,11 @@ bool cQOgre::InitWindow( void )
 bool cQOgre::InitScene( void )
 /**********************************************************************/
 {
-    mScene    = mRoot->createSceneManager( Ogre::ST_GENERIC );    
+    mScene    = mRoot->createSceneManager( Ogre::ST_GENERIC );
     mCamera   = mScene->createCamera( "MainCamera" );
     mViewport = mWindow->addViewport( mCamera );
-    
+    mViewport->setBackgroundColour( Ogre::ColourValue( 0.8,0.8,1 ) );
+
     return true;
 }
 
@@ -151,7 +182,7 @@ void cQOgre::resizeGL( int iWidth, int iHeight )
 /**********************************************************************/
 {
     mCamera->setAspectRatio( (float)width() / (float)height() );
-	mWindow->resize( width(), height() );
+    mWindow->resize( width(), height() );
     mWindow->windowMovedOrResized();
 }
 
@@ -160,7 +191,6 @@ void cQOgre::resizeEvent( QResizeEvent *e )
 /**********************************************************************/
 {
     QGLWidget::resizeEvent( e );
-//    resizeGL( e->size().width(), e->size().height() );
 }
 
 /**********************************************************************/

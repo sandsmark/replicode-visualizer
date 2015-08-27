@@ -8,6 +8,7 @@
  */
 
 #include <App/GUI/cQOgre.h>
+#include <Overlay/OgreOverlaySystem.h>
 #include <QTime>
 
 namespace Visor
@@ -49,6 +50,7 @@ namespace Visor
         cVisualizerReplicodeNode *mTrackNode;
 		eMouseMode mMouseMode;
 		bool mClick;
+        Ogre::OverlaySystem *mOverlaySystem;
                 
 		void Rotate( const float iDX, const float iDY );
 		void Move( const float iDX, const float iDY );

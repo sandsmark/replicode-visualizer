@@ -21,9 +21,7 @@
 #include <Replicode/Hypertree/cVisualizerReplicode.h>
 #include <Replicode/Hypertree/cVisualizerReplicodeNode.h>
 #include <Replicode/Component/cComponentReplicode.h>
-#include <r_exec/init.h>
 #include <Debug/cDebug.h>
-#include <chrono>
 
 using namespace Visor;
 
@@ -50,19 +48,7 @@ bool cApp::Init( void )
 {    
     mMainWindow = new cQMainWindow;
     mMainWindow->show();
-    
-#ifdef Q_WS_MAC
-    Ogre::String vPath = Ogre::macBundlePath() + "/Contents/Resources/";
-#else
-    Ogre::String vPath = "Resources/";
-#endif
-    using namespace std::chrono;
-    r_exec::Init( NULL,
-                  []() -> uint64_t {
-                      return duration_cast<microseconds>(steady_clock::now().time_since_epoch()).count();
-                  },
-                  Ogre::String( vPath + "user.classes.replicode" ).c_str(), &mImage, &mMetadata );
-    
+
     return true;    
 }
 
